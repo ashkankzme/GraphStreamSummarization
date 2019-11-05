@@ -1,5 +1,5 @@
-from .graph import Graph
-from .hash import hash
+from graph import Graph
+from hash import hash
 
 
 class TCMAdjacencyMatrix(Graph):
@@ -18,9 +18,9 @@ class TCMAdjacencyMatrix(Graph):
             for node in input_graph:
                 hashed_node = hash(node, self.order, i)
                 if hashed_node not in matrix:
-                    input_graph[hashed_node] = {}
+                    matrix[hashed_node] = {}
                 for adjacent_node in input_graph[node]:
-                    hashed_adjacent_node = hash(adjacent_node, self.order)
+                    hashed_adjacent_node = hash(adjacent_node, self.order, i)
                     if hashed_adjacent_node not in matrix[hashed_node]:
                         matrix[hashed_node][hashed_adjacent_node] = 0
                     matrix[hashed_node][hashed_adjacent_node] += 1

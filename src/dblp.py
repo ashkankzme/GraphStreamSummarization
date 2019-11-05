@@ -1,5 +1,5 @@
 import json
-from .TCM_adjacency_matrix import TCMAdjacencyMatrix
+from TCM_adjacency_matrix import TCMAdjacencyMatrix
 
 
 with open('../data/dblp_coauthorship.json') as coauthorship_file:
@@ -28,3 +28,7 @@ for edge in coauthorship_graph_edges:
 
 tcm_coauthorship_graph = TCMAdjacencyMatrix(500, 9)
 tcm_coauthorship_graph.constructGraph(coauthorship_graph)
+print(tcm_coauthorship_graph.matrices[0][0])
+print(tcm_coauthorship_graph.matrices[3][0])
+print(tcm_coauthorship_graph.matrices[5][0])
+print(tcm_coauthorship_graph.matrices[8][0])
