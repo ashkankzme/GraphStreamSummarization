@@ -26,6 +26,5 @@ for edge in coauthorship_graph_edges:
         coauthorship_graph[y][x] = 1
     else: coauthorship_graph[y][x] += 1
 
-tcm_coauthorship_graph = TCMAdjacencyMatrix()
+tcm_coauthorship_graph = TCMAdjacencyMatrix(500, 9)
 tcm_coauthorship_graph.constructGraph(coauthorship_graph)
-
