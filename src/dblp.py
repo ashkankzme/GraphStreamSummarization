@@ -1,7 +1,7 @@
 import json
 
 
-def load_dblp_graph(order, d):
+def load_dblp_graph():
     with open('../data/dblp_coauthorship.json') as coauthorship_file:
         coauthorship_graph_edges = json.load(coauthorship_file)
 
