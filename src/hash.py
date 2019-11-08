@@ -14,8 +14,16 @@ ab_list = [
     [43, 19]
 ]
 
+cache = {}
+
 
 def hash(s, range, bucket):
-    initial_seed = int(hashlib.sha256(s.encode('utf-8')).hexdigest(), 16)
+    initial_seed = None
+    if s not in cache:
+        initial_seed = int(hashlib.sha256(s.encode('utf-8')).hexdigest(), 16)
+        cache[s] = initial_seed
+    else:
+        initial_seed = cache[s]
+
     rand_for_bucket = initial_seed * ab_list[bucket][0] + ab_list[bucket][1]
     return rand_for_bucket % range

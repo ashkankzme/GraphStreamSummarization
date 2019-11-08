@@ -8,9 +8,9 @@ highest_compression_rate = 40
 step_size = 20
 
 distributions = []
+dblp_coauthorship_graph = load_dblp_graph()
 for i in range(((lowest_compression_rate - highest_compression_rate) // step_size) + 1):
-    dblp_coauthorship_graph = load_dblp_graph()
-    order = len(dblp_coauthorship_graph) / (lowest_compression_rate - (i * step_size))
+    order = len(dblp_coauthorship_graph) // (lowest_compression_rate - (i * step_size))
     dblp_TCM_graph = TCMAdjacencyMatrix(order, d)
     dblp_TCM_graph.constructGraph(dblp_coauthorship_graph)
 

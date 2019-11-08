@@ -23,7 +23,7 @@ class TCMAdjacencyMatrix(Graph):
                     hashed_adjacent_node = hash(adjacent_node, self.order, i)
                     if hashed_adjacent_node not in matrix[hashed_node]:
                         matrix[hashed_node][hashed_adjacent_node] = 0
-                    matrix[hashed_node][hashed_adjacent_node] += 1
+                    matrix[hashed_node][hashed_adjacent_node] += input_graph[node][adjacent_node]
 
     def insertEdge(self, edge):
         return
