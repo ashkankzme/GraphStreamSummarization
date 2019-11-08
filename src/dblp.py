@@ -26,4 +26,4 @@ def load_dblp_graph():
             coauthorship_graph[y][x] = 1
         else: coauthorship_graph[y][x] += 1
 
-    return coauthorship_graph
+    return coauthorship_graph, coauthorship_graph_edges

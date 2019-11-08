@@ -1,28 +1,31 @@
 from dblp import load_dblp_graph
 from TCM_adjacency_matrix import TCMAdjacencyMatrix
-import json
+from hash import hash
+import json, math
 
 d = 9
 lowest_compression_rate = 160
 highest_compression_rate = 40
 step_size = 20
 
-distributions = []
-dblp_coauthorship_graph = load_dblp_graph()
+edge_freq_estimation_errors = []
+dblp_coauthorship_graph, dblp_coauthorship_graph_edges = load_dblp_graph()
 for i in range(((lowest_compression_rate - highest_compression_rate) // step_size) + 1):
     order = len(dblp_coauthorship_graph) // (lowest_compression_rate - (i * step_size))
     dblp_TCM_graph = TCMAdjacencyMatrix(order, d)
     dblp_TCM_graph.constructGraph(dblp_coauthorship_graph)
 
-    distribution = {}
-    for i in range(d):
-        for node in dblp_TCM_graph.matrices[i]:
-            for adj_node in dblp_TCM_graph.matrices[i][node]:
-                if dblp_TCM_graph.matrices[i][node][adj_node] not in distribution:
-                    distribution[dblp_TCM_graph.matrices[i][node][adj_node]] = 0
-                distribution[dblp_TCM_graph.matrices[i][node][adj_node]] += 1 / d
-
-    distributions.append(distribution)
+    edge_freq_estimation_error = 0
+    for edge in dblp_coauthorship_graph_edges:
+        weight = edge[2]
+        estimated_weight = math.inf
+        for i in range(d):
+            node_a = hash(edge[0], order, i)
+            node_b = hash(edge[1], order, i)
+            if dblp_TCM_graph.matrices[i][node_a][node_b] < estimated_weight:
+                estimated_weight = dblp_TCM_graph.matrices[i][node_a][node_b]
+        edge_freq_estimation_error += abs(estimated_weight - weight)
+    edge_freq_estimation_errors.append(edge_freq_estimation_error/len(dblp_coauthorship_graph_edges))
 
 with open('../data/exp1-a.json', 'w') as f:
-    f.write(json.dumps(distributions))
+    f.write(json.dumps(edge_freq_estimation_errors))
