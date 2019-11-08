@@ -4,7 +4,7 @@ from hash import hash
 
 class TCMAdjacencyMatrix(Graph):
     def __init__(self, order, d):
-        self.matrices = [0]*d
+        self.matrices = [0] * d
         self.order = order
         self.d = d
 
@@ -24,12 +24,3 @@ class TCMAdjacencyMatrix(Graph):
                     if hashed_adjacent_node not in matrix[hashed_node]:
                         matrix[hashed_node][hashed_adjacent_node] = 0
                     matrix[hashed_node][hashed_adjacent_node] += input_graph[node][adjacent_node]
-
-    def insertEdge(self, edge):
-        return
-
-    def removeEdge(self, edge):
-        return
-
-    def updateEdge(self, edge):
-        return
