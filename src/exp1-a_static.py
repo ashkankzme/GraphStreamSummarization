@@ -1,4 +1,4 @@
-from dblp import load_dblp_graph_partially
+from dblp import load_dblp_graph
 from TCM_adjacency_matrix import TCMAdjacencyMatrix
 from hash import hash
 import json, math, random, numbers
@@ -7,11 +7,9 @@ d = 9
 lowest_compression_rate = 160
 highest_compression_rate = 40
 step_size = 20
-initial_edges_to_load = 1000000
 
 edge_freq_estimation_errors = []
-# initially we load a fraction of the DBLP graph. Then we add edges to it in a stream to build the rest of the network.
-dblp_coauthorship_graph, dblp_coauthorship_graph_edges = load_dblp_graph_partially(initial_edges_to_load)
+dblp_coauthorship_graph, dblp_coauthorship_graph_edges = load_dblp_graph()
 for i in range(((lowest_compression_rate - highest_compression_rate) // step_size) + 1):
     order = len(dblp_coauthorship_graph) // (lowest_compression_rate - (i * step_size))
     dblp_TCM_graph = TCMAdjacencyMatrix(order, d)
@@ -19,11 +17,8 @@ for i in range(((lowest_compression_rate - highest_compression_rate) // step_siz
 
     edge_freq_estimation_error = 0
     sampled_count = 0
-    for edge in dblp_coauthorship_graph_edges[initial_edges_to_load:]:
-        # updating the graphs
-        dblp_TCM_graph.addEdge(edge[0], edge[1], 1)
-        dblp_coauthorship_graph.addEdge(edge[0], edge[1], 1)
-
+    error_counter = 0
+    for edge in dblp_coauthorship_graph_edges:
         # sampling!
         if random.uniform(0, 1) > 0.01:
             continue
@@ -41,5 +36,5 @@ for i in range(((lowest_compression_rate - highest_compression_rate) // step_siz
 
     edge_freq_estimation_errors.append(edge_freq_estimation_error/sampled_count)
 
-with open('../data/exp1-a.json', 'w') as f:
+with open('../data/exp1-a_static.json', 'w') as f:
     f.write(json.dumps(edge_freq_estimation_errors))
