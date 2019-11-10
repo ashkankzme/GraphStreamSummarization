@@ -17,6 +17,7 @@ for i in range(((lowest_compression_rate - highest_compression_rate) // step_siz
 
     edge_freq_estimation_error = 0
     sampled_count = 0
+    error_counter = 0
     for edge in dblp_coauthorship_graph_edges:
         # sampling!
         if random.uniform(0, 1) > 0.01:
@@ -28,8 +29,10 @@ for i in range(((lowest_compression_rate - highest_compression_rate) // step_siz
             node_b = hash(edge[1], order, i)
             if dblp_TCM_graph.matrices[i][node_a][node_b] < estimated_weight:
                 estimated_weight = dblp_TCM_graph.matrices[i][node_a][node_b]
-        edge_freq_estimation_error += abs(estimated_weight - weight) if isinstance(estimated_weight, numbers.Number) and isinstance(weight, numbers.Number) else 0
-        sampled_count += 1
+
+        if isinstance(estimated_weight, numbers.Number) and isinstance(weight, numbers.Number):
+            edge_freq_estimation_error += abs(estimated_weight - weight)
+            sampled_count += 1
 
     edge_freq_estimation_errors.append(edge_freq_estimation_error/sampled_count)
 
