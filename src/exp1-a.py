@@ -5,15 +5,15 @@ from hash import hash
 import json, math, random, numbers, copy
 
 d = 9
-lowest_compression_rate = 160
-highest_compression_rate = 40
-step_size = 20
+lowest_compression_rate = 70
+highest_compression_rate = 10
+step_size = 10
 initial_edges_to_load = 100000
 
 edge_freq_estimation_errors = []
 # initially we load a fraction of the DBLP graph. Then we add edges to it in a stream to build the rest of the network.
 dblp_coauthorship_graph_main, dblp_coauthorship_graph_edges = load_snap_graph(
-    data_path='../data/dblp_coauthorship.json',
+    data_path='../data/sx-superuser.txt',
     partial_loading_limit=initial_edges_to_load)
 for compression_rate in range(((lowest_compression_rate - highest_compression_rate) // step_size) + 1):
     order_2 = len(dblp_coauthorship_graph_edges) / (lowest_compression_rate - (compression_rate * step_size))
