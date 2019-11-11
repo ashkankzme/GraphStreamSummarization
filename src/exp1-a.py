@@ -1,4 +1,4 @@
-from dblp import load_dblp_graph_partially
+from dblp import load_dblp_graph
 from TCM_adjacency_matrix import TCMAdjacencyMatrix
 from hash import hash
 import json, math, random, numbers
@@ -11,11 +11,12 @@ initial_edges_to_load = 1000000
 
 edge_freq_estimation_errors = []
 # initially we load a fraction of the DBLP graph. Then we add edges to it in a stream to build the rest of the network.
-dblp_coauthorship_graph, dblp_coauthorship_graph_edges = load_dblp_graph_partially(initial_edges_to_load)
-for i in range(((lowest_compression_rate - highest_compression_rate) // step_size) + 1):
-    order = len(dblp_coauthorship_graph) // (lowest_compression_rate - (i * step_size))
-    dblp_TCM_graph = TCMAdjacencyMatrix(order, d)
-    dblp_TCM_graph.constructGraph(dblp_coauthorship_graph)
+dblp_coauthorship_graph, dblp_coauthorship_graph_edges = load_dblp_graph(data_path='../data/dblp_coauthorship.json',
+                                                                         partial_loading_limit=initial_edges_to_load)
+for compression_rate in range(((lowest_compression_rate - highest_compression_rate) // step_size) + 1):
+    order = len(dblp_coauthorship_graph.matrix) // (lowest_compression_rate - (compression_rate * step_size))
+    dblp_TCM_graph = TCMAdjacencyMatrix(order, d, directed=False)
+    dblp_TCM_graph.constructGraph(dblp_coauthorship_graph.matrix)
 
     edge_freq_estimation_error = 0
     sampled_count = 0
@@ -27,7 +28,7 @@ for i in range(((lowest_compression_rate - highest_compression_rate) // step_siz
         # sampling!
         if random.uniform(0, 1) > 0.01:
             continue
-        weight = dblp_coauthorship_graph[edge[0]][edge[1]]
+        weight = dblp_coauthorship_graph.matrix[edge[0]][edge[1]]
         estimated_weight = math.inf
         for i in range(d):
             node_a = hash(edge[0], order, i)
@@ -39,7 +40,8 @@ for i in range(((lowest_compression_rate - highest_compression_rate) // step_siz
             edge_freq_estimation_error += abs(estimated_weight - weight)
             sampled_count += 1
 
-    edge_freq_estimation_errors.append(edge_freq_estimation_error/sampled_count)
+    edge_freq_estimation_errors.append(edge_freq_estimation_error / sampled_count)
+    print("Pass {} completed, here's the error: {}".format(compression_rate, edge_freq_estimation_error / sampled_count))
 
 with open('../data/exp1-a.json', 'w') as f:
     f.write(json.dumps(edge_freq_estimation_errors))

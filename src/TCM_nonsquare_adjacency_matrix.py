@@ -2,11 +2,12 @@ from hash import hash
 
 
 class TCMANonSquaredjacencyMatrix:
-    def __init__(self, w, l, d):
+    def __init__(self, w, l, d, directed):
         self.matrices = [0] * d
         self.w = w
         self.l = l
         self.d = d
+        self.directed = directed
 
     def constructGraph(self, input_graph):
         # apply hash function on all nodes in graph
