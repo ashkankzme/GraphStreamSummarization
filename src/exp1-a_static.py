@@ -1,4 +1,4 @@
-from dblp import load_dblp_graph
+from data_loader import load_dblp_graph, load_snap_graph
 from TCM_adjacency_matrix import TCMAdjacencyMatrix
 from hash import hash
 import json, math, random, numbers

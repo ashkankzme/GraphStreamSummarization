@@ -1,4 +1,4 @@
-from dblp import load_dblp_graph
+from data_loader import load_dblp_graph, load_snap_graph
 from TCM_adjacency_matrix import TCMAdjacencyMatrix
 from graph import Graph
 from hash import hash
@@ -8,11 +8,11 @@ d = 9
 lowest_compression_rate = 160
 highest_compression_rate = 40
 step_size = 20
-initial_edges_to_load = 1000000
+initial_edges_to_load = 100000
 
 edge_freq_estimation_errors = []
 # initially we load a fraction of the DBLP graph. Then we add edges to it in a stream to build the rest of the network.
-dblp_coauthorship_graph_main, dblp_coauthorship_graph_edges = load_dblp_graph(
+dblp_coauthorship_graph_main, dblp_coauthorship_graph_edges = load_snap_graph(
     data_path='../data/dblp_coauthorship.json',
     partial_loading_limit=initial_edges_to_load)
 for compression_rate in range(((lowest_compression_rate - highest_compression_rate) // step_size) + 1):
@@ -43,5 +43,5 @@ for compression_rate in range(((lowest_compression_rate - highest_compression_ra
     print(
         "Pass {} completed, here's the error: {}".format(compression_rate, edge_freq_estimation_error / sampled_count))
 
-with open('../data/exp1-a.json', 'w') as f:
+with open('../data/exp1-a_superuser.json', 'w') as f:
     f.write(json.dumps(edge_freq_estimation_errors))

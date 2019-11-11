@@ -17,3 +17,21 @@ def load_dblp_graph(data_path, partial_loading_limit = -1):
         coauthorship_graph.constructGraph(coauthorship_graph_edges)
 
     return coauthorship_graph, coauthorship_graph_edges
+
+
+def load_snap_graph(data_path, partial_loading_limit=-1):
+    with open(data_path) as f:
+        snap_lines = f.readlines()
+
+    snap_graph_edges = []
+    for line in snap_lines:
+        edge = line.split()
+        snap_graph_edges.append(edge)
+
+    snap_graph = Graph(directed=True)
+    if partial_loading_limit > 0:
+        snap_graph.constructGraph(snap_graph_edges[:partial_loading_limit])
+    else:
+        snap_graph.constructGraph(snap_graph_edges)
+
+    return snap_graph, snap_graph_edges
