@@ -4,7 +4,7 @@ from hash import clear_cache
 import json, math, random, numbers, copy, time
 
 d = 9
-lowest_compression_rate = 300
+compression_rate = 300
 step_size = 10000000
 initial_edges_to_load = 1000000
 
@@ -14,7 +14,7 @@ graph_main, edges = load_snap_graph(
     partial_loading_limit=initial_edges_to_load)
 times = []
 for step in range(6):
-    order_2 = ((step + 1) * step_size) / (lowest_compression_rate - (step * step_size))
+    order_2 = ((step + 1) * step_size) / compression_rate
     order = round(math.sqrt(order_2))
     graph_copy = copy.deepcopy(graph_main)
     clear_cache()
