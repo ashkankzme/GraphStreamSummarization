@@ -1,4 +1,5 @@
 from hash import hash
+import math
 
 
 class TCMAdjacencyMatrix:
@@ -41,3 +42,13 @@ class TCMAdjacencyMatrix:
                 if hashed_a not in self.matrices[i][hashed_b]:
                     self.matrices[i][hashed_b][hashed_a] = 0
                 self.matrices[i][hashed_b][hashed_a] += weight
+
+    def estimateEdgeWeight(self, a, b):
+        estimated_weight = math.inf
+        for i in range(self.d):
+            node_a = hash(a, self.order, i)
+            node_b = hash(b, self.order, i)
+            if self.matrices[i][node_a][node_b] < estimated_weight:
+                estimated_weight = self.matrices[i][node_a][node_b]
+
+        return estimated_weight
