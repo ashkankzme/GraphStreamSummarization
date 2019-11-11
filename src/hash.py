@@ -27,3 +27,7 @@ def hash(s, range, bucket):
 
     rand_for_bucket = initial_seed * ab_list[bucket][0] + ab_list[bucket][1]
     return rand_for_bucket % range
+
+
+def clear_cache():
+    cache = {}
