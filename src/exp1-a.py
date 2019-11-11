@@ -14,7 +14,8 @@ edge_freq_estimation_errors = []
 dblp_coauthorship_graph, dblp_coauthorship_graph_edges = load_dblp_graph(data_path='../data/dblp_coauthorship.json',
                                                                          partial_loading_limit=initial_edges_to_load)
 for compression_rate in range(((lowest_compression_rate - highest_compression_rate) // step_size) + 1):
-    order = len(dblp_coauthorship_graph.matrix) // (lowest_compression_rate - (compression_rate * step_size))
+    order_2 = len(dblp_coauthorship_graph_edges) / (lowest_compression_rate - (compression_rate * step_size))
+    order = round(math.sqrt(order_2))
     dblp_TCM_graph = TCMAdjacencyMatrix(order, d, directed=False)
     dblp_TCM_graph.constructGraph(dblp_coauthorship_graph.matrix)
 
