@@ -2,5 +2,5 @@
 /.idea/
 /data/dblp_coauthorship.json
 /data/sx-superuser.txt
-/data/sx-superuser.txt
+/data/sx-stackoverflow.txt
 /analysis/.ipynb*
