@@ -26,3 +26,5 @@ The results are saved in the data folder.
 ## Scalibility Experiment
 Simply run python scalibility.py and you should be good to go. The results are saved in the data folder.
 
+## Generating the Graphs
+There is a jupyter notebook in the analysis folder. There is code there to produce the graphs in the project report.
